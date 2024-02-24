@@ -1,0 +1,54 @@
+h2 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#idout,
+#nameForPrint,
+#address {
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+#idout,
+#orderId,
+#isCopy {
+    text-align: center;
+    font-size: 1.2em;
+    /* Increase the font size */
+    font-weight: bold;
+    margin-top: 5px;
+    /* Reduce the vertical margin after "Order #" */
+    margin-bottom: 10px;
+    /* Reduce the vertical margin after "Order #" */
+}
+
+table {
+    width: 100%;
+}
+
+#paymentsData td:nth-child(1),
+#itemsData td:nth-child(1),
+#itemsData th:nth-child(1),
+#SumData th:nth-child(1) {
+    text-align: left;
+    font-size: 1.2em;
+}
+
+#paymentsData td:nth-child(2),
+#itemsData td:nth-child(2),
+#itemsData th:nth-child(2),
+#SumData th:nth-child(2) {
+    text-align: right;
+    font-size: 1.2em;
+}
+
+@media (width >=1250px) {
+    body {
+        width: 500px;
+        background-color: burlywood;
+    }
+}

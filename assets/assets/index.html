@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=500, initial-scale=1.0">
+    <title>Dynamic Table Example</title>
+    <style>
+        h2 {
+            text-align: center;
+            /* Center-align the heading */
+            font-size: 1.5em;
+            /* Increase the font size */
+            margin-bottom: 10px;
+            /* Reduce the vertical margin after "Kitchen Receipt" */
+        }
+        #idout,
+        #nameForPrint,
+        #address {
+            text-align: center;
+            font-size: 1.2em;
+            /* Increase the font size */
+            margin-top: 5px;
+            /* Reduce the vertical margin after "Order #" */
+            margin-bottom: 10px;
+            /* Reduce the vertical margin after "Order #" */
+        }
+        #idout,
+        #orderId,
+        #isCopy {
+            text-align: center;
+            font-size: 1.2em;
+            /* Increase the font size */
+            font-weight: bold;
+            margin-top: 5px;
+            /* Reduce the vertical margin after "Order #" */
+            margin-bottom: 10px;
+            /* Reduce the vertical margin after "Order #" */
+        }
+        table {
+            width: 100%;
+            /* Set the table width to 100% */
+        }
+        #paymentsData td:nth-child(1),
+        #itemsData td:nth-child(1),
+        #itemsData th:nth-child(1),
+        #SumData th:nth-child(1) {
+            text-align: left;
+            font-size: 1.2em;
+        }
+        #paymentsData td:nth-child(2),
+        #itemsData td:nth-child(2),
+        #itemsData th:nth-child(2),
+        #SumData th:nth-child(2) {
+            text-align: right;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div id="photot-receipt">
+        <h2>Order Receipt</h2>
+        <div id="nameForPrint"></div>
+        <div id="address"></div>
+        <div id="orderId"></div>
+        <hr />
+        <table id="paymentsData" border="0">
+            <tbody>
+                <tr>
+                    <td id="employee"></td>
+                    <td id="customer"></td>
+                </tr>
+                <tr>
+                    <td id="createdDate"></td>
+                    <td id="createdTime"></td>
+                </tr>
+                <tr>
+                    <td id="printedDate"></td>
+                    <td id="printedTime"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="isCopy">***** COPY *****</div>
+        <hr />
+        <table id="itemsData" border="0">
+            <thead>
+                <tr>
+                    <th>Items ordered</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <hr />
+        <table id="SumData" border="0">
+            <thead>
+                <tr>
+                    <th>Subtotal</th>
+                    <th id="subtotal"></th>
+                </tr>
+                <tr>
+                    <th>Total sum</th>
+                    <th id="totalSum"></th>
+                </tr>
+                <tr id="discountRow">
+                    <th>Discount</th>
+                    <th id="discount"></th>
+                </tr>
+                <tr>
+                    <th>Tax</th>
+                    <th id="taxSum"></th>
+                </tr>
+                <tr id="includedTaxRow">
+                    <th>Included Taxes</th>
+                    <th id="includedTaxSum"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <hr />
+    </div>
+    <h1 id="title-shor">click on image for save it </h1>
+    <div id="output" style="padding: 12px;"></div>
+    <script>
+        // Array with data to insert into the table
+        var prindata = [];
+        if (prindata.length == 0) {
+            prindata = [{
+                "nameForPrint": "",
+                "address": "001.test2",
+                "orderId": "10",
+                "isBill": false,
+                "employee": "кассир пароль 1",
+                "customer": "John",
+                "createdDate": "19.02.2024",
+                "createdTime": "16:45",
+                "printedDate": "20.02.2024",
+                "printedTime": "17:24",
+                "isCopy": true,
+                "items": [{
+                        "name": "Банан",
+                        "price": 900.0,
+                        "quantity": 1.0
+                    },
+                    {
+                        "name": "TASSAY",
+                        "price": 500.0,
+                        "quantity": 1.0
+                    }
+                ],
+                "subtotal": "4100.00",
+                "totalSum": "4894.00",
+                "discount": "1.0",
+                "taxSum": 0.0,
+                "includedTaxSum": 1.0
+            }];
+        }
+        // Function to insert data into the table
+        function populateTable(data) {
+            var table = document.getElementById('itemsData')
+                .getElementsByTagName('tbody')[0];
+            // Iterate over each object in the data array
+            data.forEach(function(item) {
+                // Create a new row and cells
+                var newRow = table.insertRow(table.rows.length);
+                // Create cells for each column
+                var cell1 = newRow.insertCell(0);
+                var cell2 = newRow.insertCell(1);
+                // Insert data into cells
+                cell1.innerHTML = "X" + Number(item.quantity).toFixed(
+                    2) + " " + item.name;
+                cell2.innerHTML = Number(item.price).toFixed(2);
+                //cell1.innerHTML = item.name + renderModifiers(item.modifiers, 'name');
+                //cell2.innerHTML = item.price + renderModifiers(item.modifiers, 'price');
+            });
+        }
+        // Call the function to populate the table with data from prindata
+        populateTable(prindata[0].items);
+        // Set the content dynamically
+        document.getElementById('nameForPrint').innerHTML = prindata[0]
+            .nameForPrint;
+        document.getElementById('address').innerHTML = prindata[0].address;
+        if (prindata[0].isBill === true) {
+            document.getElementById('orderId').innerHTML =
+                'Invoice for Order #' + prindata[0].orderId;
+        } else {
+            document.getElementById('orderId').innerHTML = 'Order #' + prindata[
+                0].orderId;
+        }
+        document.getElementById('employee').innerHTML = 'Employee: ' + prindata[
+            0].employee;
+        document.getElementById('customer').innerHTML = 'Customer: ' + prindata[
+            0].customer;
+        document.getElementById('createdDate').innerHTML = 'Date: ' + prindata[
+            0].createdDate;
+        document.getElementById('createdTime').innerHTML = 'Time: ' + prindata[
+            0].createdTime;
+        document.getElementById('printedDate').innerHTML = 'Printing date: ' +
+            prindata[0].printedDate;
+        document.getElementById('printedTime').innerHTML = 'Time: ' + prindata[
+            0].printedTime;
+        document.getElementById('subtotal').innerHTML = prindata[0].subtotal;
+        document.getElementById('totalSum').innerHTML = prindata[0].totalSum;
+        document.getElementById('discount').innerHTML = prindata[0].discount;
+        document.getElementById('taxSum').innerHTML = prindata[0].taxSum;
+        document.getElementById('includedTaxSum').innerHTML = prindata[0]
+            .includedTaxSum;
+        var isCopy = document.getElementById('isCopy');
+        if (prindata[0].isCopy) {
+            isCopy.style.display = 'block';
+        } else {
+            isCopy.style.display = 'none';
+        }
+        var discountRow = document.getElementById('discountRow');
+        if (prindata[0].discount > 0) {
+            discountRow.style.display = 'table-row';
+        } else {
+            discountRow.style.display = 'none';
+        }
+        var includedTaxRow = document.getElementById('includedTaxRow');
+        if (prindata[0].includedTaxSum > 0) {
+            includedTaxRow.style.display = 'table-row';
+        } else {
+            includedTaxRow.style.display = 'none';
+        }
+        function edite(obj) {
+            document.getElementById('orderId').innerHTML =
+                'Invoice for Order #' + obj.id;
+            document.getElementById('address').innerHTML = obj.address;
+            document.getElementById('customer').innerHTML = 'Customer: ' + obj
+                .customer;
+            document.getElementById('employee').innerHTML = 'Employee: ' + obj
+                .employ;
+            document.getElementById('createdDate').innerHTML = 'Date: ' + obj
+                .createdDate;
+            document.getElementById('createdTime').innerHTML = 'Time: ' + obj
+                .createdTime;
+            document.getElementById('printedDate').innerHTML =
+                'Printing date: ' + obj.printedDate;
+            document.getElementById('printedTime').innerHTML = 'Time: ' + obj
+                .printedTime;
+        }
+        function takeshot() {
+            let div = document.getElementById('photot-receipt');
+            var canvas = document.createElement('canvas');
+            var name = document.getElementById('orderId').innerHTML = 'Invoice No: #' + prindata[0].orderId;
+            canvas.width = 500;
+            canvas.height = 500;
+            canvas.padding = "24px";
+            var opts = {
+                canvas: canvas,
+                logging: true,
+                useCORS: true,
+            };
+            // html2canvas(div, {
+            //     width: 500,
+            //     height: 500
+            // }).then(
+            //     function(canvas) {
+            //         canvas.width = "500px";
+            //         canvas.height = "500px";
+            //         var newDev = document.getElementById('output');
+            //         newDev.style.width = "500px";
+            //         newDev.style.height = "500px";
+            //         newDev.appendChild(canvas);
+            //     })
+            html2canvas(div, opts).then(function(canvas) {
+                var a = document.createElement('a');
+                a.href = canvas.toDataURL("image/png");
+                a.download = `${name}.png`;
+                a.click();
+            });
+        }
+    </script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js"
+        defer>
+    </script>
+</body>
+</html>
